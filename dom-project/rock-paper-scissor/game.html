@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+</head>
+
+<body>
+    <h2>Rock Paper Scissors Game</h2>
+    <button onclick="
+    playGame('Rock');
+    ">Rock</button>
+
+    <button onclick="
+    playGame('Paper');
+    ">Paper</button>
+
+    <button onclick="
+    playGame('Scissors');
+    ">Scissors</button>
+
+    <button onclick="
+    playGame('Reset');
+    ">Reset Score</button>
+
+    <script>
+
+        function picComputerMove() {
+            let computer_selection = '';
+            const randomNumber = Math.random();
+
+            if (randomNumber >= 0 && randomNumber < 1 / 3) {
+                computer_selection = 'Rock';
+                console.log(`Computer picked ${computer_selection}`);
+            }
+            else if (randomNumber >= 1 / 3 && randomNumber < 2 / 3) {
+                computer_selection = 'Paper';
+                console.log(`Computer picked ${computer_selection}`);
+            }
+            else {
+                computer_selection = 'Scissors';
+                console.log(`Computer picked ${computer_selection}`);
+
+            }
+            return computer_selection;
+        }
+
+        let losswintie = JSON.parse(localStorage.getItem("losswintie")) || { win: 0, loss: 0, tie: 0 };
+
+        function playGame(playerMove) {
+            computer_selection = picComputerMove()
+            let result;
+            if (computer_selection === 'Scissors') {
+                if (playerMove === 'Rock') {
+                    result = 'You Win'
+                }
+                else if (playerMove === 'Paper') {
+                    result = 'You Lose'
+                }
+                else {
+                    result = 'Tie'
+                }
+            }
+            else if (computer_selection === 'Paper') {
+                if (playerMove === 'Rock') {
+                    result = 'You Lose'
+                }
+                else if (playerMove === 'Paper') {
+                    result = 'Tie'
+                }
+                else {
+                    result = 'You Win'
+                }
+            }
+            else if (playerMove === 'Reset') {
+                losswintie = { win: 0, loss: 0, tie: 0 };
+                localStorage.removeItem('losswintie');
+                alert(`Score Reset! Wins: ${losswintie.win}, Losses: ${losswintie.loss}, Ties: ${losswintie.tie}`);
+                return;
+            }
+            else {
+                if (playerMove === 'Rock') {
+                    result = 'Tie'
+                }
+                else if (playerMove === 'Paper') {
+                    result = 'You Win'
+                }
+                else {
+                    result = 'You Lose'
+                }
+            }
+            if (result === "You Win") {
+                losswintie.win++;
+            }
+            else if (result === "You Lose") {
+                losswintie.loss++;
+            }
+            else {
+                losswintie.tie++;
+            }
+
+            alert(`You picked ${playerMove}, Computer picked ${computer_selection}, ${result}
+             Wins: ${losswintie.win}, Losses: ${losswintie.loss}, Ties: ${losswintie.tie}`);
+            localStorage.setItem('losswintie', JSON.stringify(losswintie));
+        }
+
+    </script>
+</body>
+
+</html>
